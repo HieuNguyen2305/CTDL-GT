@@ -143,6 +143,18 @@ void deleteTree(Node* root) {
   deleteTree(root->right);
   delete root;
 }
+bool areBooksCopies(Node* root1, Node* root2) {
+  if (root1 == nullptr && root2 == nullptr) return true; // Cả hai cây rỗng, là bản copy
+  if (root1 == nullptr || root2 == nullptr) return false; // Một cây rỗng, không phải bản copy
+
+  // So sánh giá trị nút và duyệt đệ quy
+  if (root1->index != root2->index || root1->title != root2->title) {
+    return false;
+  }
+
+  return areBooksCopies(root1->left, root2->left) &&
+         areBooksCopies(root1->right, root2->right);
+}
 int main() {
   Node* root = createTree();
 
@@ -159,7 +171,17 @@ int main() {
   cout << "Mục " << idToDelete << " đã được xóa." << endl;
 
   printChapterTitle(root, 4); 
+  Node* root1 = createTree1();
+  Node* root2 = createTree2();
 
+
+  bool areCopies = areBooksCopies(root1, root2);
+
+if (areCopies) {
+  cout << "Hai cuốn sách là bản copy của nhau." << endl;
+} else {
+  cout << "Hai cuốn sách không phải là bản copy của nhau." << endl;
+}
   deleteTree(root);
 
   return 0;
